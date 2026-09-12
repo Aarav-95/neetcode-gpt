@@ -18,10 +18,7 @@ class Solution:
         # y_pred: predicted probabilities (shape: n_samples x n_classes)
         # Hint: clip y_pred to [1e-7, 1 - 1e-7] to avoid log(0)
         # return round(your_answer, 4)
-        y_pred = np.clip(y_pred, 1e-7, 1 - 1e-7)
-        res = np.array([])
-        for i in range(len(y_true)):
-            cat = y_true[i] * np.log(y_pred[i])
-            res = np.append(res, cat)
-        
-        return np.round((-1 / len(y_true)) * np.sum(res), 4)
+        epsilon = 1e-7
+        y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
+        loss = -np.mean(np.sum(y_true * np.log(y_pred), axis=1))
+        return round(loss, 4)
